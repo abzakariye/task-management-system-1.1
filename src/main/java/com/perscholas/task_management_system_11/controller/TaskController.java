@@ -3,7 +3,6 @@ package com.perscholas.task_management_system_11.controller;
 import com.perscholas.task_management_system_11.model.Task;
 import com.perscholas.task_management_system_11.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ public class TaskController {
     public String getAllTasks(Model model) {
         List<Task> tasks = taskService.getAllTasks();
         model.addAttribute("tasks", tasks);
-        return "tasks-list";
+        return "task-list";
     }
 
     @GetMapping("/new")
@@ -35,11 +34,11 @@ public class TaskController {
 
 
 
-    @GetMapping("/edit{id}")
+    @GetMapping("/edit/{id}")
     public String showEditTaskForm(@PathVariable Long id, Model model) {
-        Optional<Task> task = taskService.getTaskById(id);
-        if (task.isPresent()) {
-            model.addAttribute("task", task.get());
+        Optional<Task> optionalTask = taskService.getTaskById(id);
+        if (optionalTask.isPresent()) {
+            model.addAttribute("task", optionalTask.get());
         }else {
             return "redirect:/tasks";
         }
