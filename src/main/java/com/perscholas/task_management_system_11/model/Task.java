@@ -1,10 +1,7 @@
 package com.perscholas.task_management_system_11.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -17,5 +14,9 @@ public class Task {
 
     private String title;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private  Employee employee;
     private String status;
+
 }

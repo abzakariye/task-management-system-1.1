@@ -1,5 +1,6 @@
 package com.perscholas.task_management_system_11.service;
 
+import com.perscholas.task_management_system_11.model.Employee;
 import com.perscholas.task_management_system_11.model.Task;
 import com.perscholas.task_management_system_11.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,10 @@ public class TaskService {
 
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
+    }
+
+    public Optional<Task> getTasksByEmployee(Employee employee) {
+        return getTaskById(employee.getId());
     }
 
     public Task createTask(Task task) {
