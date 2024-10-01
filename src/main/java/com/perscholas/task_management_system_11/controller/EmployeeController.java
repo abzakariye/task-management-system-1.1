@@ -5,16 +5,14 @@ import com.perscholas.task_management_system_11.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Controller
-// @RequestMapping("/employees")
+//@RequestMapping("/")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -26,7 +24,7 @@ public class EmployeeController {
     public String viewEmployees(Model model) {
         List<Employee> employees = employeeService.getAllEmployees();
         model.addAttribute("employees", employees);
-        return "employees-list";
+        return "employee-list";
     }
 
     @GetMapping("/employees/new")
@@ -39,20 +37,29 @@ public class EmployeeController {
 
     @PostMapping("/employees/save")
     public String saveEmployee(@ModelAttribute("employee") Employee employee) {
-        if (!isAuthenticatedAdmin()) {
-            return "error/403";
-        }
-
         employeeService.saveEmployee(employee);
+        return "redirect:/employees";
+    }
+
+    @GetMapping("/employees/edit/{id}")
+    public String showEditEmployeeForm(@PathVariable Long id, Model model) {
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        model.addAttribute("employee", employee.get());
+        return "employee-form";
+    }
+
+    @GetMapping("/employees/delete/{id}")
+    public String deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
         return "redirect:/employees";
     }
 
 
 
-    private boolean isAuthenticatedAdmin() {
-
-        Optional<Employee> employee = employeeService.getEmployeeById(1L);
-        
-        return employee.isPresent();
-    }
+//    private boolean isAuthenticatedAdmin() {
+//
+//        Optional<Employee> employee = employeeService.getEmployeeById(1L);
+//
+//        return employee.isPresent();
+//    }
 }

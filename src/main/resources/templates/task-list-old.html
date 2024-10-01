@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task List</title>
+    <link rel="stylesheet" th:href="@{/static/styles.css}" />
+</head>
+<body>
+<h1>Task List</h1>
+<div th:each="task : ${tasks}">
+    <div class="task">
+        <h2 th:text="${task.title}"></h2> <!-- Fill in to display task title -->
+        <p th:text="${task.description}"></p>  <!-- Fill in to display task description -->
+        <p>Status: <span th:text="${task.status}"></span></p>  <!-- Fill in to display task status -->
+        <a th:href="@{/tasks/edit/{id}(id=${task.id})}">Edit</a>  <!-- Fill in to generate the edit link -->
+        <a th:href="@{/tasks/delete/{id}(id=${task.id})}">Delete</a>  <!-- Fill in to generate the delete link -->
+    </div>
+</div>
+<a href="/tasks/new">Create New Task</a>
+</body>
+</html>

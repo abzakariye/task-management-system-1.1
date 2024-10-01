@@ -23,8 +23,12 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public Optional<Task> getTasksByEmployee(Employee employee) {
-        return getTaskById(employee.getId());
+//    public Optional<Task> getTasksByEmployee(Employee employee) {
+//        return getTaskById(employee.getId());
+//    }
+
+    public List<Task> getTasksByEmployee(Employee employee) {
+        return employee.getTasks();
     }
 
     public Task createTask(Task task) {
@@ -44,5 +48,21 @@ public class TaskService {
                     return taskRepository.save(task);
                 })
                 .orElseThrow(()-> new RuntimeException("Task not found"));
+    }
+
+    public void updateTaskStatus(Long taskId, String status) {
+
+        Optional<Task> task = taskRepository.findById(taskId);
+        if (task.isPresent()) {
+            task.get().setStatus(status);
+            taskRepository.save(task.get());
+        }
+
+//        taskRepository.findById(taskId)
+//                .map(task -> {
+//                    task.setStatus(status);
+//                    return taskRepository.save(task);
+//                }).orElseThrow(() -> new RuntimeException("Task not found"));
+
     }
 }
